@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-private const val REQUISICAO_NAO_SUCEDIDA = "Requisição não sucedida"
+private const val REQUISICAO_NAO_SUCEDIDA = " não sucedida"
 
 class NoticiaWebClient(
     private val service: NoticiaService = AppRetrofit().noticiaService

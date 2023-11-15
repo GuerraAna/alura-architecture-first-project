@@ -58,18 +58,17 @@ class NoticiaRepository(
     ) {
         webclient.buscaTodas(
             quandoSucesso = { noticiasNovas ->
-                noticiasNovas?.let {
-                    salvaInterno(noticiasNovas, quandoSucesso)
-                }
-            }, quandoFalha = quandoFalha
+                noticiasNovas?.let { salvaInterno(noticiasNovas, quandoSucesso) }
+            },
+            quandoFalha = quandoFalha
         )
     }
 
     private fun buscaInterno(quandoSucesso: (List<Noticia>) -> Unit) {
-        BaseAsyncTask(quandoExecuta = {
-            dao.buscaTodos()
-        }, quandoFinaliza = quandoSucesso)
-            .execute()
+        BaseAsyncTask(
+            quandoExecuta = { dao.buscaTodos() },
+            quandoFinaliza = quandoSucesso
+        ).execute()
     }
 
 
@@ -96,7 +95,8 @@ class NoticiaRepository(
             quandoExecuta = {
                 dao.salva(noticias)
                 dao.buscaTodos()
-            }, quandoFinaliza = quandoSucesso
+            },
+            quandoFinaliza = quandoSucesso
         ).execute()
     }
 
