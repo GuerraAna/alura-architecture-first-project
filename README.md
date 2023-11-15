@@ -1,0 +1,1 @@
+# Projeto para acompanhamento do curso de arquitetura da Alura, ou seja, algumas partes do código estão desatualziadas e o objetivo deste projeto é aprimorá-lo. Fora o acompanhamento do conteúdo que será passado durante o curso.
