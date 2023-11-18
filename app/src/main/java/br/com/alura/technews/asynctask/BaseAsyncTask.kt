@@ -13,5 +13,4 @@ class BaseAsyncTask<T>(
         super.onPostExecute(resultado)
         quandoFinaliza(resultado)
     }
-
 }

@@ -5,24 +5,26 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import br.com.alura.technews.R
 import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
+import br.com.alura.technews.repository.FalhaResource
 import br.com.alura.technews.repository.NoticiaRepository
+import br.com.alura.technews.repository.SucessoResource
 import br.com.alura.technews.ui.activity.extensions.mostraErro
 import br.com.alura.technews.ui.recyclerview.adapter.ListaNoticiasAdapter
 import br.com.alura.technews.ui.viewModel.ListaNoticiasViewModelFactory
 import br.com.alura.technews.ui.viewModel.NewsListViewModel
-import kotlinx.android.synthetic.main.activity_lista_noticias.*
+import kotlinx.android.synthetic.main.activity_lista_noticias.activity_lista_noticias_fab_salva_noticia
+import kotlinx.android.synthetic.main.activity_lista_noticias.activity_lista_noticias_recyclerview
 
 private const val TITULO_APPBAR = "Notícias"
 private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carregar as novas notícias"
 
-class ListaNoticiasActivity : AppCompatActivity() {
+internal class ListaNoticiasActivity : AppCompatActivity() {
 
     private val viewModel by lazy {
         val repository = NoticiaRepository(AppDatabase.getInstance(this@ListaNoticiasActivity).noticiaDAO)
@@ -70,10 +72,14 @@ class ListaNoticiasActivity : AppCompatActivity() {
     }
 
     private fun buscaNoticias() {
-        viewModel.buscaTodos().observe(this, Observer { resource ->
-            resource.dado?.let { adapter.atualiza(it) }
-            resource.erro?.let { mostraErro(MENSAGEM_FALHA_CARREGAR_NOTICIAS) }
-        })
+        viewModel.buscaTodos().observe(this,
+            Observer { resource ->
+                when (resource) {
+                    is SucessoResource -> resource.dado?.let { adapter.atualiza(it) }
+                    is FalhaResource -> resource.erro?.let { mostraErro(MENSAGEM_FALHA_CARREGAR_NOTICIAS) }
+                }
+            }
+        )
     }
 
     private fun abreFormularioModoCriacao() {
