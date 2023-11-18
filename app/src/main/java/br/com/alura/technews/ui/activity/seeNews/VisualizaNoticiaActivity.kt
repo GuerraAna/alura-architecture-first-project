@@ -1,5 +1,5 @@
 
-package br.com.alura.technews.ui.activity
+package br.com.alura.technews.ui.activity.seeNews
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,11 @@ import br.com.alura.technews.R
 import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.repository.NoticiaRepository
+import br.com.alura.technews.ui.activity.NOTICIA_ID_CHAVE
+import br.com.alura.technews.ui.activity.addNews.FormularioNoticiaActivity
 import br.com.alura.technews.ui.activity.extensions.mostraErro
-import kotlinx.android.synthetic.main.activity_visualiza_noticia.*
+import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_texto
+import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_titulo
 
 private const val NOTICIA_NAO_ENCONTRADA = "Notícia não encontrada"
 private const val TITULO_APPBAR = "Notícia"
@@ -88,5 +91,4 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
         intent.putExtra(NOTICIA_ID_CHAVE, noticiaId)
         startActivity(intent)
     }
-
 }
