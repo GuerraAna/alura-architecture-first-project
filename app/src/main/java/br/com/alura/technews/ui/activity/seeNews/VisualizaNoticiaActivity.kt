@@ -16,24 +16,23 @@ import br.com.alura.technews.ui.activity.extensions.mostraErro
 import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_texto
 import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_titulo
 
-private const val NOTICIA_NAO_ENCONTRADA = "Notícia não encontrada"
-private const val TITULO_APPBAR = "Notícia"
-private const val MENSAGEM_FALHA_REMOCAO = "Não foi possível remover notícia"
-
+/**
+ * This activity represents the details of selected news.
+ */
 class VisualizaNoticiaActivity : AppCompatActivity() {
 
-    private val noticiaId: Long by lazy {
-        intent.getLongExtra(NOTICIA_ID_CHAVE, 0)
-    }
+    private val noticiaId: Long by lazy { intent.getLongExtra(NOTICIA_ID_CHAVE, 0) }
     private val repository by lazy {
         NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
     }
+
     private lateinit var noticia: Noticia
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_visualiza_noticia)
-        title = TITULO_APPBAR
+
+        title = getString(R.string.news)
         verificaIdDaNoticia()
     }
 
@@ -56,17 +55,20 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
     }
 
     private fun buscaNoticiaSelecionada() {
-        repository.buscaPorId(noticiaId, quandoSucesso = { noticiaEncontrada ->
-            noticiaEncontrada?.let {
-                this.noticia = it
-                preencheCampos(it)
+        repository.buscaPorId(
+            noticiaId = noticiaId,
+            quandoSucesso = { noticiaEncontrada ->
+                noticiaEncontrada?.let {
+                    this.noticia = it
+                    preencheCampos(it)
+                }
             }
-        })
+        )
     }
 
     private fun verificaIdDaNoticia() {
         if (noticiaId == 0L) {
-            mostraErro(NOTICIA_NAO_ENCONTRADA)
+            mostraErro(getString(R.string.news_not_found))
             finish()
         }
     }
@@ -78,11 +80,13 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
 
     private fun remove() {
         if (::noticia.isInitialized) {
-            repository.remove(noticia, quandoSucesso = {
-                finish()
-            }, quandoFalha = {
-                mostraErro(MENSAGEM_FALHA_REMOCAO)
-            })
+            repository.remove(
+                noticia,
+                quandoSucesso = { finish() },
+                quandoFalha = {
+                    mostraErro(getString(R.string.cant_delete_news))
+                }
+            )
         }
     }
 
