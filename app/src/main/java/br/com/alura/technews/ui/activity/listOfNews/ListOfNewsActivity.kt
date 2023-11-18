@@ -23,8 +23,9 @@ import br.com.alura.technews.ui.viewModel.NewsListViewModel
 import kotlinx.android.synthetic.main.activity_list_of_news.activity_lista_noticias_fab_salva_noticia
 import kotlinx.android.synthetic.main.activity_list_of_news.activity_lista_noticias_recyclerview
 
-private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carregar as novas notícias"
-
+/**
+ * This activity represents the list of news from local API.
+ */
 internal class ListOfNewsActivity : AppCompatActivity() {
 
     private val viewModel by lazy {
@@ -35,31 +36,29 @@ internal class ListOfNewsActivity : AppCompatActivity() {
         provedor.get(NewsListViewModel::class.java)
     }
 
-    private val adapter by lazy {
-        ListaNoticiasAdapter(context = this)
-    }
+    private val adapter by lazy { ListaNoticiasAdapter(context = this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_of_news)
 
+        // Setup title of toolbar
         title = getString(R.string.last_news)
-        configuraRecyclerView()
-        configuraFabAdicionaNoticia()
+
+        setupListOfNews()
+        setupListeners()
     }
 
     override fun onResume() {
         super.onResume()
-        buscaNoticias()
+        searchNews()
     }
 
-    private fun configuraFabAdicionaNoticia() {
-        activity_lista_noticias_fab_salva_noticia.setOnClickListener {
-            abreFormularioModoCriacao()
-        }
+    private fun setupListeners() {
+        activity_lista_noticias_fab_salva_noticia.setOnClickListener { abreFormularioModoCriacao() }
     }
 
-    private fun configuraRecyclerView() {
+    private fun setupListOfNews() {
         val divisor = DividerItemDecoration(this, VERTICAL)
         activity_lista_noticias_recyclerview.addItemDecoration(divisor)
         activity_lista_noticias_recyclerview.adapter = adapter
@@ -70,16 +69,14 @@ internal class ListOfNewsActivity : AppCompatActivity() {
         adapter.quandoItemClicado = this::abreVisualizadorNoticia
     }
 
-    private fun buscaNoticias() {
+    private fun searchNews() {
         viewModel.buscaTodos().observe(
             this,
             Observer { resource ->
                 when (resource) {
                     is SucessoResource -> resource.dado?.let { adapter.atualiza(it) }
                     is FalhaResource -> resource.erro?.let {
-                        mostraErro(
-                            MENSAGEM_FALHA_CARREGAR_NOTICIAS
-                        )
+                        mostraErro(getString(R.string.load_list_of_news_message_of_error))
                     }
                 }
             }
@@ -91,9 +88,9 @@ internal class ListOfNewsActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun abreVisualizadorNoticia(it: Noticia) {
+    private fun abreVisualizadorNoticia(noticia: Noticia) {
         val intent = Intent(this, VisualizaNoticiaActivity::class.java)
-        intent.putExtra(NOTICIA_ID_CHAVE, it.id)
+        intent.putExtra(NOTICIA_ID_CHAVE, noticia.id)
         startActivity(intent)
     }
 }

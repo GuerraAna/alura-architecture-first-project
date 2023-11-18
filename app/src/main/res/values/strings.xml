@@ -7,4 +7,5 @@
     <string name="salvar">Salvar</string>
     <string name="last_news">últimas notícias</string>
     <string name="add_one_news">adicionar uma notícia</string>
+    <string name="load_list_of_news_message_of_error">Não foi possível carregar as novas notícias</string>
 </resources>
