@@ -15,18 +15,15 @@ internal class NoticiaRepository(
     private val noticiasEncontradas = MutableLiveData<Resource<List<Noticia>?>>()
 
     fun buscaTodos(): LiveData<Resource<List<Noticia>?>> {
-        val atualizaListaNoticias: (List<Noticia>) ->Unit = {
-            noticiasEncontradas.value = Resource(dado = it)
+        val atualizaListaNoticias: (List<Noticia>) -> Unit = {
+            noticiasEncontradas.value = SucessoResource(dado = it)
         }
 
         buscaInterno(quandoSucesso = atualizaListaNoticias)
         buscaNaApi(
             quandoSucesso = atualizaListaNoticias,
             quandoFalha = { erro ->
-                val resourceAtual = noticiasEncontradas.value
-                val resourceDeFalha = criaResourceDeFalha<List<Noticia>?>(resourceAtual, erro)
-
-                noticiasEncontradas.value = resourceDeFalha
+                noticiasEncontradas.value = FalhaResource<List<Noticia>?>(erro)
             }
         )
 
