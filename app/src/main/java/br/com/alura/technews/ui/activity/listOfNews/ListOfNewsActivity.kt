@@ -1,8 +1,7 @@
-package br.com.alura.technews.ui.activity
+package br.com.alura.technews.ui.activity.listOfNews
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,20 +13,22 @@ import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.repository.FalhaResource
 import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.repository.SucessoResource
+import br.com.alura.technews.ui.activity.NOTICIA_ID_CHAVE
+import br.com.alura.technews.ui.activity.addNews.FormularioNoticiaActivity
 import br.com.alura.technews.ui.activity.extensions.mostraErro
+import br.com.alura.technews.ui.activity.seeNews.VisualizaNoticiaActivity
 import br.com.alura.technews.ui.recyclerview.adapter.ListaNoticiasAdapter
 import br.com.alura.technews.ui.viewModel.ListaNoticiasViewModelFactory
 import br.com.alura.technews.ui.viewModel.NewsListViewModel
-import kotlinx.android.synthetic.main.activity_lista_noticias.activity_lista_noticias_fab_salva_noticia
-import kotlinx.android.synthetic.main.activity_lista_noticias.activity_lista_noticias_recyclerview
+import kotlinx.android.synthetic.main.activity_list_of_news.activity_lista_noticias_fab_salva_noticia
+import kotlinx.android.synthetic.main.activity_list_of_news.activity_lista_noticias_recyclerview
 
-private const val TITULO_APPBAR = "Notícias"
 private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carregar as novas notícias"
 
-internal class ListaNoticiasActivity : AppCompatActivity() {
+internal class ListOfNewsActivity : AppCompatActivity() {
 
     private val viewModel by lazy {
-        val repository = NoticiaRepository(AppDatabase.getInstance(this@ListaNoticiasActivity).noticiaDAO)
+        val repository = NoticiaRepository(AppDatabase.getInstance(this@ListOfNewsActivity).noticiaDAO)
         val factory = ListaNoticiasViewModelFactory(repository)
         val provedor = ViewModelProviders.of(this, factory)
 
@@ -40,13 +41,11 @@ internal class ListaNoticiasActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lista_noticias)
+        setContentView(R.layout.activity_list_of_news)
 
-        title = TITULO_APPBAR
+        title = getString(R.string.last_news)
         configuraRecyclerView()
         configuraFabAdicionaNoticia()
-
-        Log.i("ViewModel", viewModel.toString())
     }
 
     override fun onResume() {
@@ -72,11 +71,16 @@ internal class ListaNoticiasActivity : AppCompatActivity() {
     }
 
     private fun buscaNoticias() {
-        viewModel.buscaTodos().observe(this,
+        viewModel.buscaTodos().observe(
+            this,
             Observer { resource ->
                 when (resource) {
                     is SucessoResource -> resource.dado?.let { adapter.atualiza(it) }
-                    is FalhaResource -> resource.erro?.let { mostraErro(MENSAGEM_FALHA_CARREGAR_NOTICIAS) }
+                    is FalhaResource -> resource.erro?.let {
+                        mostraErro(
+                            MENSAGEM_FALHA_CARREGAR_NOTICIAS
+                        )
+                    }
                 }
             }
         )

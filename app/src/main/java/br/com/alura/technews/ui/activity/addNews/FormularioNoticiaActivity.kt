@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.activity
+package br.com.alura.technews.ui.activity.addNews
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,8 +8,10 @@ import br.com.alura.technews.R
 import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.repository.NoticiaRepository
+import br.com.alura.technews.ui.activity.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.activity.extensions.mostraErro
-import kotlinx.android.synthetic.main.activity_formulario_noticia.*
+import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_texto
+import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_titulo
 
 private const val TITULO_APPBAR_EDICAO = "Editando notícia"
 private const val TITULO_APPBAR_CRIACAO = "Criando notícia"
