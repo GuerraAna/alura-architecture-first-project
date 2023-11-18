@@ -5,7 +5,10 @@
     <string name="titulo">Título</string>
     <string name="escreva_seu_texto">Escreva seu texto…</string>
     <string name="salvar">Salvar</string>
+    <string name="news">notícia</string>
     <string name="last_news">últimas notícias</string>
     <string name="add_one_news">adicionar uma notícia</string>
     <string name="load_list_of_news_message_of_error">Não foi possível carregar as novas notícias</string>
+    <string name="news_not_found">Notícia não encontrada</string>
+    <string name="cant_delete_news">Não foi possível remover notícia</string>
 </resources>
