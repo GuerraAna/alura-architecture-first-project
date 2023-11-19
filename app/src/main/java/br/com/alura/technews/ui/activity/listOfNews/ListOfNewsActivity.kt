@@ -57,6 +57,7 @@ internal class ListOfNewsActivity : AppCompatActivity() {
 
     private fun setupListOfNews() {
         val divisor = DividerItemDecoration(this, VERTICAL)
+
         activity_lista_noticias_recyclerview.addItemDecoration(divisor)
         activity_lista_noticias_recyclerview.adapter = adapter
         configuraAdapter()
