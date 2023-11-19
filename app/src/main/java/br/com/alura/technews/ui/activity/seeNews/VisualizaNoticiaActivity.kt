@@ -12,7 +12,9 @@ import androidx.lifecycle.ViewModelProviders
 import br.com.alura.technews.R
 import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
+import br.com.alura.technews.repository.FalhaResource
 import br.com.alura.technews.repository.NoticiaRepository
+import br.com.alura.technews.repository.SucessoResource
 import br.com.alura.technews.ui.activity.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.activity.addNews.FormularioNoticiaActivity
 import br.com.alura.technews.ui.activity.extensions.mostraErro
@@ -58,19 +60,25 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
             R.id.visualiza_noticia_menu_edita -> abreFormularioEdicao()
             R.id.visualiza_noticia_menu_remove -> remove()
         }
+
         return super.onOptionsItemSelected(item)
     }
 
     private fun buscaNoticiaSelecionada() {
         viewModel.buscaPorId().observe(
             this,
-            Observer {
-                it?.let {
-                    this.noticia = it
-                    preencheCampos(it)
+            Observer { resource ->
+                when (resource) {
+                    is SucessoResource -> onSelectedNews(resource.dado)
+                    is FalhaResource -> mostraErro(resource.erro!!)
                 }
             }
         )
+    }
+
+    private fun onSelectedNews(dado: Noticia?) {
+        this.noticia = dado!!
+        preencheCampos(dado)
     }
 
     private fun verificaIdDaNoticia() {
@@ -91,23 +99,22 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
                 this,
                 Observer { noticia ->
                     when (noticia.erro == null) {
-                        true -> {
-                            Toast.makeText(
-                                this,
-                                "Removido com sucesso",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
-                            finish()
-                        }
-
-                        else -> {
-                            mostraErro(getString(R.string.cant_delete_news))
-                        }
+                        true -> onRemovedNews()
+                        else -> mostraErro(getString(R.string.cant_delete_news))
                     }
                 }
             )
         }
+    }
+
+    private fun onRemovedNews() {
+        Toast.makeText(
+            this,
+            "Removido com sucesso",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        finish()
     }
 
     private fun abreFormularioEdicao() {

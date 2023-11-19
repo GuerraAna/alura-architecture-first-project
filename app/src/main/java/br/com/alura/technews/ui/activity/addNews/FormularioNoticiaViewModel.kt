@@ -13,7 +13,7 @@ internal class FormularioNoticiaViewModel(
     /**
      * Search for the details of selected or not news item Id.
      */
-    fun buscaPorId(noticiaId: Long): LiveData<Noticia?> =
+    fun buscaPorId(noticiaId: Long): LiveData<Resource<Noticia?>> =
         repository.buscaPorId(noticiaId = noticiaId)
 
     /**
