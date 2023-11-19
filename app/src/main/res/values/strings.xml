@@ -11,4 +11,6 @@
     <string name="load_list_of_news_message_of_error">Não foi possível carregar as novas notícias</string>
     <string name="news_not_found">Notícia não encontrada</string>
     <string name="cant_delete_news">Não foi possível remover notícia</string>
+    <string name="edit_news">Edição da notícia</string>
+    <string name="create_news">Cria nova notícia</string>
 </resources>

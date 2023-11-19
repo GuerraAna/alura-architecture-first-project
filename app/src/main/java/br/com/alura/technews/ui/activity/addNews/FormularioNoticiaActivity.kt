@@ -18,18 +18,16 @@ import br.com.alura.technews.ui.activity.extensions.mostraErro
 import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_texto
 import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_titulo
 
-private const val TITULO_APPBAR_EDICAO = "Editando notícia"
-private const val TITULO_APPBAR_CRIACAO = "Criando notícia"
-private const val MENSAGEM_ERRO_SALVAR = "Não foi possível salvar notícia"
-
+/**
+ * This activity represents the edition mode of news.
+ * The user can save or edit the news details.
+ */
 internal class FormularioNoticiaActivity : AppCompatActivity() {
 
-    private val noticiaId: Long by lazy {
-        intent.getLongExtra(NOTICIA_ID_CHAVE, 0)
-    }
+    private val noticiaId: Long by lazy { intent.getLongExtra(NOTICIA_ID_CHAVE, 0) }
 
     private val viewModel by lazy {
-        val repository = NoticiaRepository(AppDatabase.getInstance(this@FormularioNoticiaActivity).noticiaDAO)
+        val repository = NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
         val factory = FormularioNoticiasViewModelFactory(repository)
         val provider = ViewModelProviders.of(this, factory)
 
@@ -45,10 +43,9 @@ internal class FormularioNoticiaActivity : AppCompatActivity() {
     }
 
     private fun definindoTitulo() {
-        title = if (noticiaId > 0) {
-            TITULO_APPBAR_EDICAO
-        } else {
-            TITULO_APPBAR_CRIACAO
+        title = when (noticiaId > 0) {
+            true -> getString(R.string.edit_news)
+            else -> getString(R.string.create_news)
         }
     }
 
@@ -83,6 +80,7 @@ internal class FormularioNoticiaActivity : AppCompatActivity() {
                 salva(Noticia(noticiaId, titulo, texto))
             }
         }
+
         return super.onOptionsItemSelected(item)
     }
 
