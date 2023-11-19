@@ -66,12 +66,18 @@ internal class NoticiaRepository(
         return liveData
     }
 
-    fun buscaPorId(noticiaId: Long): LiveData<Noticia?> {
-        val liveData = MutableLiveData<Noticia?>()
+    fun buscaPorId(noticiaId: Long): LiveData<Resource<Noticia?>> {
+        val liveData = MutableLiveData<Resource<Noticia?>>()
 
         BaseAsyncTask(
             quandoExecuta = { dao.buscaPorId(noticiaId) },
-            quandoFinaliza = { liveData.value = it }
+            quandoFinaliza = {
+                if (it != null) {
+                    liveData.value = SucessoResource(it)
+                } else {
+                    liveData.value = FalhaResource("vazioooooo")
+                }
+            }
         ).execute()
 
         return liveData

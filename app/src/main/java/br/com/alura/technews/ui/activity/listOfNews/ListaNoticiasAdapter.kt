@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.recyclerview.adapter
+package br.com.alura.technews.ui.activity.listOfNews
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
-import kotlinx.android.synthetic.main.item_noticia.view.*
+import kotlinx.android.synthetic.main.item_noticia.view.item_noticia_texto
+import kotlinx.android.synthetic.main.item_noticia.view.item_noticia_titulo
 
 class ListaNoticiasAdapter(
     private val context: Context,
