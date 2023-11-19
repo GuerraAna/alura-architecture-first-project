@@ -5,7 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import br.com.alura.technews.R
 import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
@@ -22,8 +25,12 @@ import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visual
 class VisualizaNoticiaActivity : AppCompatActivity() {
 
     private val noticiaId: Long by lazy { intent.getLongExtra(NOTICIA_ID_CHAVE, 0) }
-    private val repository by lazy {
-        NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
+    private val viewModel by lazy {
+        val repository = NoticiaRepository(AppDatabase.getInstance(this@VisualizaNoticiaActivity).noticiaDAO)
+        val factory = VisualizaNoticiaViewModelFactory(noticiaId, repository)
+        val provider = ViewModelProviders.of(this@VisualizaNoticiaActivity, factory)
+
+        provider.get(VisualizaNoticiaViewModel::class.java)
     }
 
     private lateinit var noticia: Noticia
@@ -55,10 +62,10 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
     }
 
     private fun buscaNoticiaSelecionada() {
-        repository.buscaPorId(
-            noticiaId = noticiaId,
-            quandoSucesso = { noticiaEncontrada ->
-                noticiaEncontrada?.let {
+        viewModel.buscaPorId().observe(
+            this,
+            Observer {
+                it?.let {
                     this.noticia = it
                     preencheCampos(it)
                 }
@@ -80,11 +87,24 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
 
     private fun remove() {
         if (::noticia.isInitialized) {
-            repository.remove(
-                noticia,
-                quandoSucesso = { finish() },
-                quandoFalha = {
-                    mostraErro(getString(R.string.cant_delete_news))
+            viewModel.remove().observe(
+                this,
+                Observer { noticia ->
+                    when (noticia.erro == null) {
+                        true -> {
+                            Toast.makeText(
+                                this,
+                                "Removido com sucesso",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            finish()
+                        }
+
+                        else -> {
+                            mostraErro(getString(R.string.cant_delete_news))
+                        }
+                    }
                 }
             )
         }

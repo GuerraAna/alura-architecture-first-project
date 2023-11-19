@@ -3,7 +3,10 @@ package br.com.alura.technews.ui.activity.addNews
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import br.com.alura.technews.R
 import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
@@ -17,18 +20,24 @@ private const val TITULO_APPBAR_EDICAO = "Editando notícia"
 private const val TITULO_APPBAR_CRIACAO = "Criando notícia"
 private const val MENSAGEM_ERRO_SALVAR = "Não foi possível salvar notícia"
 
-class FormularioNoticiaActivity : AppCompatActivity() {
+internal class FormularioNoticiaActivity : AppCompatActivity() {
 
     private val noticiaId: Long by lazy {
         intent.getLongExtra(NOTICIA_ID_CHAVE, 0)
     }
-    private val repository by lazy {
-        NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
+
+    private val viewModel by lazy {
+        val repository = NoticiaRepository(AppDatabase.getInstance(this@FormularioNoticiaActivity).noticiaDAO)
+        val factory = FormularioNoticiasViewModelFactory(repository)
+        val provider = ViewModelProviders.of(this, factory)
+
+        provider.get(FormularioNoticiaViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_noticia)
+
         definindoTitulo()
         preencheFormulario()
     }
@@ -42,12 +51,15 @@ class FormularioNoticiaActivity : AppCompatActivity() {
     }
 
     private fun preencheFormulario() {
-        repository.buscaPorId(noticiaId, quandoSucesso = { noticiaEncontrada ->
-            if (noticiaEncontrada != null) {
-                activity_formulario_noticia_titulo.setText(noticiaEncontrada.titulo)
-                activity_formulario_noticia_texto.setText(noticiaEncontrada.texto)
+        viewModel.buscaPorId(noticiaId).observe(
+            this,
+            Observer {
+                if (it != null) {
+                    activity_formulario_noticia_titulo.setText(it.titulo)
+                    activity_formulario_noticia_texto.setText(it.texto)
+                }
             }
-        })
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -67,27 +79,18 @@ class FormularioNoticiaActivity : AppCompatActivity() {
     }
 
     private fun salva(noticia: Noticia) {
-        val falha = { _: String? ->
-            mostraErro(MENSAGEM_ERRO_SALVAR)
-        }
-        val sucesso = { _: Noticia ->
-            finish()
-        }
+        viewModel.editaOuSalva(noticia).observe(
+            this,
+            Observer {
+                when (it.erro == null) {
+                    true -> {
+                        Toast.makeText(this, "Sucesso ao salvar", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
 
-        if (noticia.id > 0) {
-            repository.edita(
-                noticia,
-                quandoSucesso = sucesso,
-                quandoFalha = falha
-            )
-        } else {
-            repository.salva(
-                noticia,
-                quandoSucesso = sucesso,
-                quandoFalha = falha
-            )
-        }
+                    else -> mostraErro("Erro ao salvar")
+                }
+            }
+        )
     }
-
-
 }
