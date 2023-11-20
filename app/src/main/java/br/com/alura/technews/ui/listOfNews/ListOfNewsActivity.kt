@@ -42,10 +42,6 @@ internal class ListOfNewsActivity : AppCompatActivity() {
 
         setupListOfNews()
         setupListeners()
-    }
-
-    override fun onResume() {
-        super.onResume()
         searchNews()
     }
 
