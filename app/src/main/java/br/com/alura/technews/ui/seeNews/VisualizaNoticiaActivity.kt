@@ -1,5 +1,5 @@
 
-package br.com.alura.technews.ui.activity.seeNews
+package br.com.alura.technews.ui.seeNews
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,9 +15,9 @@ import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.repository.FalhaResource
 import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.repository.SucessoResource
-import br.com.alura.technews.ui.activity.NOTICIA_ID_CHAVE
-import br.com.alura.technews.ui.activity.addNews.FormularioNoticiaActivity
-import br.com.alura.technews.ui.activity.extensions.mostraErro
+import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
+import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
+import br.com.alura.technews.ui.extensions.mostraErro
 import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_texto
 import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_titulo
 

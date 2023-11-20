@@ -5,7 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".ui.activity.listOfNews.ListOfNewsActivity">
+	tools:context=".ui.listOfNews.ListOfNewsActivity">
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/activity_lista_noticias_recyclerview"

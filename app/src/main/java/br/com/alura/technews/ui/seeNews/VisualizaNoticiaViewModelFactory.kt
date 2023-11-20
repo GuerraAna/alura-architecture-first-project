@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.activity.seeNews
+package br.com.alura.technews.ui.seeNews
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

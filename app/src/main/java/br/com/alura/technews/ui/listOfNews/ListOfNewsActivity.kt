@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.activity.listOfNews
+package br.com.alura.technews.ui.listOfNews
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,10 +13,10 @@ import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.repository.FalhaResource
 import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.repository.SucessoResource
-import br.com.alura.technews.ui.activity.NOTICIA_ID_CHAVE
-import br.com.alura.technews.ui.activity.addNews.FormularioNoticiaActivity
-import br.com.alura.technews.ui.activity.extensions.mostraErro
-import br.com.alura.technews.ui.activity.seeNews.VisualizaNoticiaActivity
+import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
+import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
+import br.com.alura.technews.ui.extensions.mostraErro
+import br.com.alura.technews.ui.seeNews.VisualizaNoticiaActivity
 import kotlinx.android.synthetic.main.activity_list_of_news.activity_lista_noticias_fab_salva_noticia
 import kotlinx.android.synthetic.main.activity_list_of_news.activity_lista_noticias_recyclerview
 

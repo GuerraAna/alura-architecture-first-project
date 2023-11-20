@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.activity.addNews
+package br.com.alura.technews.ui.addNews
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
