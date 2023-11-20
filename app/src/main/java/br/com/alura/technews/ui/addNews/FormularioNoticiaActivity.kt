@@ -10,9 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import br.com.alura.technews.R
 import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
-import br.com.alura.technews.repository.FalhaResource
 import br.com.alura.technews.repository.NoticiaRepository
-import br.com.alura.technews.repository.SucessoResource
 import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.extensions.mostraErro
 import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_texto
@@ -52,16 +50,10 @@ internal class FormularioNoticiaActivity : AppCompatActivity() {
     private fun preencheFormulario() {
         viewModel.buscaPorId(noticiaId).observe(
             this,
-            Observer { resource ->
-                when (resource) {
-                    is SucessoResource -> {
-                        activity_formulario_noticia_titulo.setText(resource.dado?.titulo)
-                        activity_formulario_noticia_texto.setText(resource.dado?.texto)
-                    }
-
-                    is FalhaResource -> resource.erro?.let {
-                        mostraErro(getString(R.string.load_list_of_news_message_of_error))
-                    }
+            Observer { noticiaEncontrada ->
+                if (noticiaEncontrada != null) {
+                    activity_formulario_noticia_titulo.setText(noticiaEncontrada.titulo)
+                    activity_formulario_noticia_texto.setText(noticiaEncontrada.texto)
                 }
             }
         )

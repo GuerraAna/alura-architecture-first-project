@@ -66,22 +66,7 @@ internal class NoticiaRepository(
         return liveData
     }
 
-    fun buscaPorId(noticiaId: Long): LiveData<Resource<Noticia?>> {
-        val liveData = MutableLiveData<Resource<Noticia?>>()
-
-        BaseAsyncTask(
-            quandoExecuta = { dao.buscaPorId(noticiaId) },
-            quandoFinaliza = {
-                if (it != null) {
-                    liveData.value = SucessoResource(it)
-                } else {
-                    liveData.value = FalhaResource("vazioooooo")
-                }
-            }
-        ).execute()
-
-        return liveData
-    }
+    fun buscaPorId(noticiaId: Long): LiveData<Noticia?> = dao.buscaPorId(noticiaId)
 
     private fun buscaNaApi(
         quandoSucesso: (List<Noticia>) -> Unit,
@@ -105,7 +90,7 @@ internal class NoticiaRepository(
 
     private fun salvaNaApi(
         noticia: Noticia,
-        quandoSucesso: (noticiaNova: Noticia) -> Unit,
+        quandoSucesso: () -> Unit,
         quandoFalha: (erro: String?) -> Unit
     ) {
         webclient.salva(
@@ -133,17 +118,12 @@ internal class NoticiaRepository(
 
     private fun salvaInterno(
         noticia: Noticia,
-        quandoSucesso: (noticiaNova: Noticia) -> Unit
+        quandoSucesso: () -> Unit
     ) {
-        BaseAsyncTask(quandoExecuta = {
-            dao.salva(noticia)
-            dao.buscaPorId(noticia.id)
-        }, quandoFinaliza = { noticiaEncontrada ->
-            noticiaEncontrada?.let {
-                quandoSucesso(it)
-            }
-        }).execute()
-
+        BaseAsyncTask(
+            quandoExecuta = { dao.salva(noticia) },
+            quandoFinaliza = { quandoSucesso() }
+        ).execute()
     }
 
     private fun removeNaApi(
@@ -172,7 +152,7 @@ internal class NoticiaRepository(
 
     private fun editaNaApi(
         noticia: Noticia,
-        quandoSucesso: (noticiaEditada: Noticia) -> Unit,
+        quandoSucesso: () -> Unit,
         quandoFalha: (erro: String?) -> Unit
     ) {
         webclient.edita(

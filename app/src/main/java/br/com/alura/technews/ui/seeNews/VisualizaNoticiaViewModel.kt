@@ -18,14 +18,14 @@ internal class VisualizaNoticiaViewModel(
     /**
      * Search for the details of selected or not news item Id.
      */
-    fun buscaPorId(): LiveData<Resource<Noticia?>> = repository.buscaPorId(id)
+    fun buscaPorId(): LiveData<Noticia?> = repository.buscaPorId(id)
 
     /**
      *
      */
     fun remove(): LiveData<Resource<Noticia?>> {
         return searchedNews.value?.run {
-            repository.remove(this.dado!!)
+            repository.remove(this)
         } ?: MutableLiveData<Resource<Noticia?>>().also {
             it.value = FalhaResource(erro = "Noticia não encontrada")
         }

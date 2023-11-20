@@ -12,9 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import br.com.alura.technews.R
 import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
-import br.com.alura.technews.repository.FalhaResource
 import br.com.alura.technews.repository.NoticiaRepository
-import br.com.alura.technews.repository.SucessoResource
 import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
 import br.com.alura.technews.ui.extensions.mostraErro
@@ -43,10 +41,6 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
 
         title = getString(R.string.news)
         verificaIdDaNoticia()
-    }
-
-    override fun onResume() {
-        super.onResume()
         buscaNoticiaSelecionada()
     }
 
@@ -67,18 +61,10 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
     private fun buscaNoticiaSelecionada() {
         viewModel.buscaPorId().observe(
             this,
-            Observer { resource ->
-                when (resource) {
-                    is SucessoResource -> onSelectedNews(resource.dado)
-                    is FalhaResource -> mostraErro(resource.erro!!)
-                }
+            Observer { noticiaEncontrada ->
+                noticiaEncontrada?.let { preencheCampos(it) }
             }
         )
-    }
-
-    private fun onSelectedNews(dado: Noticia?) {
-        this.noticia = dado!!
-        preencheCampos(dado)
     }
 
     private fun verificaIdDaNoticia() {
