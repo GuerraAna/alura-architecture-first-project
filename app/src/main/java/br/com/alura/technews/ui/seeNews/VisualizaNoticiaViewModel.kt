@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.activity.seeNews
+package br.com.alura.technews.ui.seeNews
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

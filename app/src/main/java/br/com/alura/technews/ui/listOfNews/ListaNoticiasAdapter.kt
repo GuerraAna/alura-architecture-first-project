@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.activity.listOfNews
+package br.com.alura.technews.ui.listOfNews
 
 import android.content.Context
 import android.view.LayoutInflater
