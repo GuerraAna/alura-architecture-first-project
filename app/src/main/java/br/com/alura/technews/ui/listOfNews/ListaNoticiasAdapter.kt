@@ -42,16 +42,12 @@ class ListaNoticiasAdapter(
         notifyItemRangeInserted(0, this.noticias.size)
     }
 
-    inner class ViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private lateinit var noticia: Noticia
 
         init {
             itemView.setOnClickListener {
-                if (::noticia.isInitialized) {
-                    quandoItemClicado(noticia)
-                }
+                if (::noticia.isInitialized) quandoItemClicado(noticia)
             }
         }
 
@@ -62,5 +58,4 @@ class ListaNoticiasAdapter(
         }
 
     }
-
 }
