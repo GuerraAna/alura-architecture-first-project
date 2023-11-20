@@ -26,11 +26,9 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
 
     private val noticiaId: Long by lazy { intent.getLongExtra(NOTICIA_ID_CHAVE, 0) }
     private val viewModel by lazy {
-        val repository = NoticiaRepository(AppDatabase.getInstance(this@VisualizaNoticiaActivity).noticiaDAO)
+        val repository = NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
         val factory = VisualizaNoticiaViewModelFactory(noticiaId, repository)
-        val provider = ViewModelProviders.of(this@VisualizaNoticiaActivity, factory)
-
-        provider.get(VisualizaNoticiaViewModel::class.java)
+        ViewModelProviders.of(this, factory).get(VisualizaNoticiaViewModel::class.java)
     }
 
     private lateinit var noticia: Noticia
@@ -59,7 +57,7 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
     }
 
     private fun buscaNoticiaSelecionada() {
-        viewModel.buscaPorId().observe(
+        viewModel.searchedNews.observe(
             this,
             Observer { noticiaEncontrada ->
                 noticiaEncontrada?.let { preencheCampos(it) }
@@ -80,17 +78,15 @@ class VisualizaNoticiaActivity : AppCompatActivity() {
     }
 
     private fun remove() {
-        if (::noticia.isInitialized) {
-            viewModel.remove().observe(
-                this,
-                Observer { noticia ->
-                    when (noticia.erro == null) {
-                        true -> onRemovedNews()
-                        else -> mostraErro(getString(R.string.cant_delete_news))
-                    }
+        viewModel.remove().observe(
+            this,
+            Observer {
+                when (it.erro == null) {
+                    true -> onRemovedNews()
+                    else -> mostraErro(getString(R.string.cant_delete_news))
                 }
-            )
-        }
+            }
+        )
     }
 
     private fun onRemovedNews() {
