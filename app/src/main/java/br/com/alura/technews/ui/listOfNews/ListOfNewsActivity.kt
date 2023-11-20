@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import br.com.alura.technews.R
 import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
-import br.com.alura.technews.repository.FalhaResource
 import br.com.alura.technews.repository.NoticiaRepository
-import br.com.alura.technews.repository.SucessoResource
 import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
 import br.com.alura.technews.ui.extensions.mostraErro
@@ -71,12 +69,8 @@ internal class ListOfNewsActivity : AppCompatActivity() {
         viewModel.buscaTodos().observe(
             this,
             Observer { resource ->
-                when (resource) {
-                    is SucessoResource -> resource.dado?.let { adapter.atualiza(it) }
-                    is FalhaResource -> resource.erro?.let {
-                        mostraErro(getString(R.string.load_list_of_news_message_of_error))
-                    }
-                }
+                resource.dado?.let { adapter.atualiza(it) }
+                resource.erro?.let { mostraErro(getString(R.string.load_list_of_news_message_of_error)) }
             }
         )
     }
