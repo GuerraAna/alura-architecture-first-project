@@ -17,14 +17,17 @@ import br.com.alura.technews.ui.extensions.mostraErro
 import br.com.alura.technews.ui.seeNews.VisualizaNoticiaActivity
 import kotlinx.android.synthetic.main.activity_list_of_news.activity_lista_noticias_fab_salva_noticia
 import kotlinx.android.synthetic.main.activity_list_of_news.activity_lista_noticias_recyclerview
+import org.koin.android.ext.android.inject
 
 /**
  * This activity represents the list of news from local API.
  */
 internal class ListOfNewsActivity : AppCompatActivity() {
 
+    private val database by inject<AppDatabase>()
+
     private val viewModel by lazy {
-        val repository = NoticiaRepository(AppDatabase.getInstance(this@ListOfNewsActivity).noticiaDAO)
+        val repository = NoticiaRepository(database.noticiaDAO)
         val factory = ListaNoticiasViewModelFactory(repository)
         val provedor = ViewModelProviders.of(this, factory)
 

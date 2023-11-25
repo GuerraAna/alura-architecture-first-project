@@ -15,6 +15,7 @@ import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.extensions.mostraErro
 import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_texto
 import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_titulo
+import org.koin.android.ext.android.inject
 
 /**
  * This activity represents the edition mode of news.
@@ -22,10 +23,12 @@ import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formu
  */
 internal class FormularioNoticiaActivity : AppCompatActivity() {
 
+    private val dataBase by inject<AppDatabase>()
+
     private val noticiaId: Long by lazy { intent.getLongExtra(NOTICIA_ID_CHAVE, 0) }
 
     private val viewModel by lazy {
-        val repository = NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
+        val repository = NoticiaRepository(dataBase.noticiaDAO)
         val factory = FormularioNoticiasViewModelFactory(repository)
         val provider = ViewModelProviders.of(this, factory)
 
