@@ -8,33 +8,23 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import br.com.alura.technews.R
-import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
-import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
 import br.com.alura.technews.ui.extensions.mostraErro
 import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_texto
 import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_titulo
-import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * This activity represents the details of selected news.
  */
 class VisualizaNoticiaActivity : AppCompatActivity() {
 
-    private val dataBase by inject<AppDatabase>()
     private val noticiaId: Long by lazy { intent.getLongExtra(NOTICIA_ID_CHAVE, 0) }
-
-    private val viewModel by lazy {
-        val repository = NoticiaRepository(dataBase.noticiaDAO)
-        val factory = VisualizaNoticiaViewModelFactory(noticiaId, repository)
-        ViewModelProviders.of(this, factory).get(VisualizaNoticiaViewModel::class.java)
-    }
-
-    private lateinit var noticia: Noticia
+    private val viewModel: VisualizaNoticiaViewModel by viewModel { parametersOf(noticiaId) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
