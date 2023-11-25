@@ -4,37 +4,25 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import br.com.alura.technews.R
-import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
-import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
 import br.com.alura.technews.ui.extensions.mostraErro
 import br.com.alura.technews.ui.seeNews.VisualizaNoticiaActivity
 import kotlinx.android.synthetic.main.activity_list_of_news.activity_lista_noticias_fab_salva_noticia
 import kotlinx.android.synthetic.main.activity_list_of_news.activity_lista_noticias_recyclerview
-import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * This activity represents the list of news from local API.
  */
 internal class ListOfNewsActivity : AppCompatActivity() {
 
-    private val database by inject<AppDatabase>()
-
-    private val viewModel by lazy {
-        val repository = NoticiaRepository(database.noticiaDAO)
-        val factory = ListaNoticiasViewModelFactory(repository)
-        val provedor = ViewModelProviders.of(this, factory)
-
-        provedor.get(NewsListViewModel::class.java)
-    }
-
     private val adapter by lazy { ListaNoticiasAdapter(context = this) }
+    private val viewModel: NewsListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

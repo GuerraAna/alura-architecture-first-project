@@ -6,16 +6,13 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import br.com.alura.technews.R
-import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
-import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.extensions.mostraErro
 import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_texto
 import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_titulo
-import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * This activity represents the edition mode of news.
@@ -23,17 +20,8 @@ import org.koin.android.ext.android.inject
  */
 internal class FormularioNoticiaActivity : AppCompatActivity() {
 
-    private val dataBase by inject<AppDatabase>()
-
     private val noticiaId: Long by lazy { intent.getLongExtra(NOTICIA_ID_CHAVE, 0) }
-
-    private val viewModel by lazy {
-        val repository = NoticiaRepository(dataBase.noticiaDAO)
-        val factory = FormularioNoticiasViewModelFactory(repository)
-        val provider = ViewModelProviders.of(this, factory)
-
-        provider.get(FormularioNoticiaViewModel::class.java)
-    }
+    private val viewModel by viewModel<FormularioNoticiaViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
