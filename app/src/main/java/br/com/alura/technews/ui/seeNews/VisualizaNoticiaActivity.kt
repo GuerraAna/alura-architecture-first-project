@@ -18,15 +18,18 @@ import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
 import br.com.alura.technews.ui.extensions.mostraErro
 import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_texto
 import kotlinx.android.synthetic.main.activity_visualiza_noticia.activity_visualiza_noticia_titulo
+import org.koin.android.ext.android.inject
 
 /**
  * This activity represents the details of selected news.
  */
 class VisualizaNoticiaActivity : AppCompatActivity() {
 
+    private val dataBase by inject<AppDatabase>()
     private val noticiaId: Long by lazy { intent.getLongExtra(NOTICIA_ID_CHAVE, 0) }
+
     private val viewModel by lazy {
-        val repository = NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
+        val repository = NoticiaRepository(dataBase.noticiaDAO)
         val factory = VisualizaNoticiaViewModelFactory(noticiaId, repository)
         ViewModelProviders.of(this, factory).get(VisualizaNoticiaViewModel::class.java)
     }
