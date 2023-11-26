@@ -60,6 +60,7 @@ internal class FormularioNoticiaActivity : AppCompatActivity() {
             R.id.formulario_noticia_salva -> {
                 val titulo = activity_formulario_noticia_titulo.text.toString()
                 val texto = activity_formulario_noticia_texto.text.toString()
+
                 salva(Noticia(noticiaId, titulo, texto))
             }
         }

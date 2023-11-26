@@ -46,9 +46,7 @@ class ListaNoticiasAdapter(
         private lateinit var noticia: Noticia
 
         init {
-            itemView.setOnClickListener {
-                if (::noticia.isInitialized) quandoItemClicado(noticia)
-            }
+            itemView.setOnClickListener { if (::noticia.isInitialized) quandoItemClicado(noticia) }
         }
 
         fun vincula(noticia: Noticia) {
@@ -56,6 +54,5 @@ class ListaNoticiasAdapter(
             itemView.item_noticia_titulo.text = noticia.titulo
             itemView.item_noticia_texto.text = noticia.texto
         }
-
     }
 }

@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.fragment
+package br.com.alura.technews.ui.seeNews
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,6 @@ import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.fragment.extensions.mostraMensagem
-import br.com.alura.technews.ui.seeNews.VisualizaNoticiaViewModel
 import kotlinx.android.synthetic.main.visualiza_noticia_fragment.activity_visualiza_noticia_texto
 import kotlinx.android.synthetic.main.visualiza_noticia_fragment.activity_visualiza_noticia_titulo
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -27,11 +26,12 @@ internal class VisualizaNoticiaFragment : Fragment() {
     }
 
     private val viewModel: VisualizaNoticiaViewModel by viewModel { parametersOf(noticiaId) }
-    var quandoSelecionaMenuEdicao: () -> Unit = {}
+    var quandoSelecionaMenuEdicao: (noticia: Noticia) -> Unit = {}
     var quandoFinalizaTela: () -> Unit = {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setHasOptionsMenu(true)
         buscaNoticiaSelecionada()
         verificaIdDaNoticia()
@@ -56,7 +56,10 @@ internal class VisualizaNoticiaFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.visualiza_noticia_menu_edita -> quandoSelecionaMenuEdicao()
+            R.id.visualiza_noticia_menu_edita -> {
+                viewModel.searchedNews.value?.let { quandoSelecionaMenuEdicao(it) }
+            }
+
             R.id.visualiza_noticia_menu_remove -> remove()
         }
 
@@ -66,9 +69,7 @@ internal class VisualizaNoticiaFragment : Fragment() {
     private fun buscaNoticiaSelecionada() {
         viewModel.searchedNews.observe(
             this,
-            Observer { noticiaEncontrada ->
-                noticiaEncontrada?.let { preencheCampos(it) }
-            }
+            Observer { noticiaEncontrada -> noticiaEncontrada?.let { preencheCampos(it) } }
         )
     }
 
