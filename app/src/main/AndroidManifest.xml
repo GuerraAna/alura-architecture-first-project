@@ -17,8 +17,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         android:name=".AppApplication">
         <activity android:name=".ui.addNews.FormularioNoticiaActivity" />
-        <activity android:name=".ui.seeNews.VisualizaNoticiaActivity" />
-        <activity android:name=".ui.listOfNews.ListOfNewsActivity">
+        <activity android:name=".ui.listOfNews.NewsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

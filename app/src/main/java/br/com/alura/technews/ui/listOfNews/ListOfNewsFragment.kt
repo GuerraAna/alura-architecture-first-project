@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.fragment
+package br.com.alura.technews.ui.listOfNews
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.fragment.extensions.mostraMensagem
-import br.com.alura.technews.ui.listOfNews.ListaNoticiasAdapter
-import br.com.alura.technews.ui.listOfNews.NewsListViewModel
 import kotlinx.android.synthetic.main.news_list_fragment.lista_noticias_fab_salva_noticia
 import kotlinx.android.synthetic.main.news_list_fragment.lista_noticias_recyclerview
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -62,9 +60,7 @@ internal class ListOfNewsFragment : Fragment() {
     }
 
     private fun configuraFabAdicionaNoticias() {
-        lista_noticias_fab_salva_noticia.setOnClickListener {
-            quandoFabSalvaNoticiasClicado()
-        }
+        lista_noticias_fab_salva_noticia.setOnClickListener { quandoFabSalvaNoticiasClicado() }
     }
 
     private fun configuraAdapter() {
