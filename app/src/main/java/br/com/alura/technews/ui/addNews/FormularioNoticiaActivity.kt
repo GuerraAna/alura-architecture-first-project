@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
-import br.com.alura.technews.ui.extensions.mostraErro
+import br.com.alura.technews.ui.extensions.activity.mostraErro
 import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_texto
 import kotlinx.android.synthetic.main.activity_formulario_noticia.activity_formulario_noticia_titulo
 import org.koin.android.viewmodel.ext.android.viewModel

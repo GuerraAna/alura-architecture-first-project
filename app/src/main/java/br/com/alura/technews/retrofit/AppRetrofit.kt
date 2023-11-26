@@ -17,6 +17,7 @@ class AppRetrofit {
             .addInterceptor(interceptador)
             .build()
     }
+
     private val retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -24,6 +25,7 @@ class AppRetrofit {
             .client(client)
             .build()
     }
+
     val noticiaService: NoticiaService by lazy {
         retrofit.create(NoticiaService::class.java)
     }

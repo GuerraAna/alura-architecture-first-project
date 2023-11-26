@@ -13,7 +13,7 @@ interface NoticiaService {
     fun salva(@Body noticia: Noticia): Call<Noticia>
 
     @PUT("noticias/{id}")
-    fun edita(@Path("id") id: Long, @Body noticia: Noticia) : Call<Noticia>
+    fun edita(@Path("id") id: Long, @Body noticia: Noticia): Call<Noticia>
 
     @DELETE("noticias/{id}")
     fun remove(@Path("id") id: Long): Call<Void>
