@@ -50,6 +50,7 @@ internal class ListOfNewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         configuraRecyclerView()
         configuraFabAdicionaNoticias()
+        activity?.title = "Notícias"
     }
 
     private fun configuraRecyclerView() {

@@ -49,6 +49,11 @@ internal class VisualizaNoticiaFragment : Fragment() {
         )
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity?.title = "Noticia"
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.visualiza_noticia_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
