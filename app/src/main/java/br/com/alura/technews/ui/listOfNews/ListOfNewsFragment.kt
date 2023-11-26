@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
-import br.com.alura.technews.ui.fragment.extensions.mostraMensagem
+import br.com.alura.technews.ui.extensions.fragment.mostraMensagem
 import kotlinx.android.synthetic.main.news_list_fragment.lista_noticias_fab_salva_noticia
 import kotlinx.android.synthetic.main.news_list_fragment.lista_noticias_recyclerview
 import org.koin.android.viewmodel.ext.android.viewModel

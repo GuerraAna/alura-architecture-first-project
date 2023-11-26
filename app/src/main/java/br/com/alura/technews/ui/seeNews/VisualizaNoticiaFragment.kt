@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
-import br.com.alura.technews.ui.fragment.extensions.mostraMensagem
+import br.com.alura.technews.ui.extensions.fragment.mostraMensagem
 import kotlinx.android.synthetic.main.visualiza_noticia_fragment.activity_visualiza_noticia_texto
 import kotlinx.android.synthetic.main.visualiza_noticia_fragment.activity_visualiza_noticia_titulo
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -21,8 +21,8 @@ import org.koin.core.parameter.parametersOf
 internal class VisualizaNoticiaFragment : Fragment() {
 
     private val noticiaId: Long by lazy {
-        arguments?.getLong(NOTICIA_ID_CHAVE) ?:
-        throw  IllegalArgumentException("O ID da notícia é inválido")
+        arguments?.getLong(NOTICIA_ID_CHAVE)
+            ?: throw IllegalArgumentException("O ID da notícia é inválido")
     }
 
     private val viewModel: VisualizaNoticiaViewModel by viewModel { parametersOf(noticiaId) }

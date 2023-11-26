@@ -10,7 +10,7 @@ import br.com.alura.technews.repository.Resource
 internal class VisualizaNoticiaViewModel(
     id: Long,
     private val repository: NoticiaRepository
-): ViewModel() {
+) : ViewModel() {
 
     val searchedNews = repository.buscaPorId(id)
 

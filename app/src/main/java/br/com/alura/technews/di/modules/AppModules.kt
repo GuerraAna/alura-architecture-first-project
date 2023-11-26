@@ -22,27 +22,11 @@ val appModules = module {
         ).build()
     }
 
-    single<NoticiaDAO> {
-        get<AppDatabase>().noticiaDAO
-    }
+    single<NoticiaDAO> { get<AppDatabase>().noticiaDAO }
+    single<NoticiaWebClient> { NoticiaWebClient() }
+    single<NoticiaRepository> { NoticiaRepository(get(), get()) }
 
-    single<NoticiaWebClient> {
-        NoticiaWebClient()
-    }
-
-    single<NoticiaRepository> {
-        NoticiaRepository(get(), get())
-    }
-
-    viewModel<NewsListViewModel> {
-        NewsListViewModel(get())
-    }
-
-    viewModel<VisualizaNoticiaViewModel> { (id: Long) ->
-        VisualizaNoticiaViewModel(id, get())
-    }
-
-    viewModel<FormularioNoticiaViewModel> {
-        FormularioNoticiaViewModel(get())
-    }
+    viewModel<NewsListViewModel> { NewsListViewModel(get()) }
+    viewModel<VisualizaNoticiaViewModel> { (id: Long) -> VisualizaNoticiaViewModel(id, get()) }
+    viewModel<FormularioNoticiaViewModel> { FormularioNoticiaViewModel(get()) }
 }

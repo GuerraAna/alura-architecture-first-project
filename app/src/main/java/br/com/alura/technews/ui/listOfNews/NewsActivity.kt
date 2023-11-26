@@ -8,7 +8,7 @@ import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
-import br.com.alura.technews.ui.fragment.extensions.transacaoFragment
+import br.com.alura.technews.ui.extensions.fragment.transacaoFragment
 import br.com.alura.technews.ui.seeNews.VisualizaNoticiaFragment
 
 /**
@@ -31,7 +31,7 @@ internal class NewsActivity : AppCompatActivity() {
 
         when (fragment) {
             is ListOfNewsFragment -> configuraListOfNewsFragment(fragment)
-            is VisualizaNoticiaFragment ->  configuraVisualizaNoticiaFragment(fragment)
+            is VisualizaNoticiaFragment -> configuraVisualizaNoticiaFragment(fragment)
         }
     }
 

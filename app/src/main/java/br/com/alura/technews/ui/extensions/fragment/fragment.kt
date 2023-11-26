@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.fragment.extensions
+package br.com.alura.technews.ui.extensions.fragment
 
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
