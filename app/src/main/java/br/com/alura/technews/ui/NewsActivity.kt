@@ -51,7 +51,6 @@ internal class NewsActivity : AppCompatActivity() {
     }
 
     private fun abreVisualizadorNoticia(noticia: Noticia) {
-        val transacao = supportFragmentManager.beginTransaction()
         val fragment = VisualizaNoticiaFragment()
         val dados = Bundle()
 
@@ -59,8 +58,8 @@ internal class NewsActivity : AppCompatActivity() {
         fragment.arguments = dados
 
         transacaoFragment {
-            transacao.replace(R.id.activity_news_container, fragment)
-            transacao.commit()
+            addToBackStack(null)
+            replace(R.id.activity_news_container, fragment)
         }
     }
 
