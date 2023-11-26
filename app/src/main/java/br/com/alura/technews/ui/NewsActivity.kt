@@ -1,4 +1,4 @@
-package br.com.alura.technews.ui.listOfNews
+package br.com.alura.technews.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
-import br.com.alura.technews.ui.NOTICIA_ID_CHAVE
 import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
 import br.com.alura.technews.ui.extensions.fragment.transacaoFragment
+import br.com.alura.technews.ui.listOfNews.ListOfNewsFragment
 import br.com.alura.technews.ui.seeNews.VisualizaNoticiaFragment
 
 /**
