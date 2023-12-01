@@ -1,6 +1,7 @@
 package br.com.alura.technews.ui
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -11,6 +12,8 @@ import br.com.alura.technews.ui.extensions.fragment.transacaoFragment
 import br.com.alura.technews.ui.listOfNews.ListOfNewsFragment
 import br.com.alura.technews.ui.seeNews.VisualizaNoticiaFragment
 
+private const val TAG_FRAGMENT_VISUALIZA_NOTICIA = "visualizaNoticia"
+
 /**
  * This activity represents the manager of news layout fragments.
  */
@@ -20,10 +23,37 @@ internal class NewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
         if (savedInstanceState == null) abreListaNoticias()
+
+        when (savedInstanceState == null) {
+            true -> abreListaNoticias()
+            else -> {
+                supportFragmentManager.findFragmentByTag(TAG_FRAGMENT_VISUALIZA_NOTICIA)?.let { fragment ->
+                    val argumentos = fragment.arguments
+                    val novoFragment = VisualizaNoticiaFragment()
+                    novoFragment.arguments = argumentos
+
+                    transacaoFragment { remove(fragment) }
+                    supportFragmentManager.popBackStack()
+
+                    transacaoFragment {
+                        val container =
+                            when (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                true -> R.id.activity_noticias_container_secundario
+                                else -> {
+                                    addToBackStack(null)
+                                    R.id.activity_noticias_container_primario
+                                }
+                            }
+
+                        replace(container, novoFragment, TAG_FRAGMENT_VISUALIZA_NOTICIA)
+                    }
+                }
+            }
+        }
     }
 
     private fun abreListaNoticias() {
-        transacaoFragment { replace(R.id.activity_news_container, ListOfNewsFragment()) }
+        transacaoFragment { replace(R.id.activity_noticias_container_primario, ListOfNewsFragment()) }
     }
 
     override fun onAttachFragment(fragment: Fragment) {
@@ -58,8 +88,16 @@ internal class NewsActivity : AppCompatActivity() {
         fragment.arguments = dados
 
         transacaoFragment {
-            addToBackStack(null)
-            replace(R.id.activity_news_container, fragment)
+            val container =
+                when (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    true -> R.id.activity_noticias_container_secundario
+                    else -> {
+                        addToBackStack(null)
+                        R.id.activity_noticias_container_primario
+                    }
+                }
+
+            replace(container, fragment, TAG_FRAGMENT_VISUALIZA_NOTICIA)
         }
     }
 
