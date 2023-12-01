@@ -1,7 +1,6 @@
 package br.com.alura.technews.ui
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -11,6 +10,7 @@ import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
 import br.com.alura.technews.ui.extensions.fragment.transacaoFragment
 import br.com.alura.technews.ui.listOfNews.ListOfNewsFragment
 import br.com.alura.technews.ui.seeNews.VisualizaNoticiaFragment
+import kotlinx.android.synthetic.main.activity_news.activity_noticias_container_secundario
 
 private const val TAG_FRAGMENT_VISUALIZA_NOTICIA = "visualizaNoticia"
 
@@ -37,7 +37,7 @@ internal class NewsActivity : AppCompatActivity() {
 
                     transacaoFragment {
                         val container =
-                            when (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                            when (activity_noticias_container_secundario != null) {
                                 true -> R.id.activity_noticias_container_secundario
                                 else -> {
                                     addToBackStack(null)
@@ -89,7 +89,7 @@ internal class NewsActivity : AppCompatActivity() {
 
         transacaoFragment {
             val container =
-                when (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                when (activity_noticias_container_secundario != null) {
                     true -> R.id.activity_noticias_container_secundario
                     else -> {
                         addToBackStack(null)
