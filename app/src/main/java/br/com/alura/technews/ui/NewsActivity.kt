@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.addNews.FormularioNoticiaActivity
@@ -22,38 +23,45 @@ internal class NewsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
-        if (savedInstanceState == null) abreListaNoticias()
 
         when (savedInstanceState == null) {
             true -> abreListaNoticias()
-            else -> {
-                supportFragmentManager.findFragmentByTag(TAG_FRAGMENT_VISUALIZA_NOTICIA)?.let { fragment ->
-                    val argumentos = fragment.arguments
-                    val novoFragment = VisualizaNoticiaFragment()
-                    novoFragment.arguments = argumentos
-
-                    transacaoFragment { remove(fragment) }
-                    supportFragmentManager.popBackStack()
-
-                    transacaoFragment {
-                        val container =
-                            when (activity_noticias_container_secundario != null) {
-                                true -> R.id.activity_noticias_container_secundario
-                                else -> {
-                                    addToBackStack(null)
-                                    R.id.activity_noticias_container_primario
-                                }
-                            }
-
-                        replace(container, novoFragment, TAG_FRAGMENT_VISUALIZA_NOTICIA)
-                    }
-                }
-            }
+            else -> tentaReabrirFragmentVisualizaNoticia()
         }
     }
 
+    private fun tentaReabrirFragmentVisualizaNoticia() {
+        supportFragmentManager
+            .findFragmentByTag(TAG_FRAGMENT_VISUALIZA_NOTICIA)?.let { fragment ->
+                val argumentos = fragment.arguments
+                val novoFragment = VisualizaNoticiaFragment()
+
+                novoFragment.arguments = argumentos
+                removeFragmentVisualizaNoticia(fragment)
+
+                transacaoFragment {
+                    replace(
+                        /* containerViewId = */ configuraContainervisualizaNoticia(),
+                        /* fragment = */ novoFragment,
+                        /* tag = */ TAG_FRAGMENT_VISUALIZA_NOTICIA
+                    )
+                }
+            }
+    }
+
+    private fun FragmentTransaction.configuraContainervisualizaNoticia() =
+        when (activity_noticias_container_secundario != null) {
+            true -> R.id.activity_noticias_container_secundario
+            else -> {
+                addToBackStack(null)
+                R.id.activity_noticias_container_primario
+            }
+        }
+
     private fun abreListaNoticias() {
-        transacaoFragment { replace(R.id.activity_noticias_container_primario, ListOfNewsFragment()) }
+        transacaoFragment {
+            replace(R.id.activity_noticias_container_primario, ListOfNewsFragment())
+        }
     }
 
     override fun onAttachFragment(fragment: Fragment) {
@@ -71,8 +79,19 @@ internal class NewsActivity : AppCompatActivity() {
     }
 
     private fun configuraVisualizaNoticiaFragment(fragment: VisualizaNoticiaFragment) {
-        fragment.quandoFinalizaTela = this::finish
+        fragment.quandoFinalizaTela = {
+            supportFragmentManager
+                .findFragmentByTag(TAG_FRAGMENT_VISUALIZA_NOTICIA)?.let { fragment ->
+                    transacaoFragment { removeFragmentVisualizaNoticia(fragment) }
+                }
+        }
+
         fragment.quandoSelecionaMenuEdicao = this::abreFormularioEdicao
+    }
+
+    private fun removeFragmentVisualizaNoticia(fragment: Fragment) {
+        transacaoFragment { remove(fragment) }
+        supportFragmentManager.popBackStack()
     }
 
     private fun abreFormularioModoCriacao() {
