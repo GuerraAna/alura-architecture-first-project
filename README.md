@@ -15,3 +15,27 @@ Obs.: Este projeto utiliza API local, precisamos do executável Jar e do Java pa
 ![Captura de tela 2023-12-02 155305](https://github.com/GuerraAna/alura-architecture-first-project/assets/78937585/7255a6ca-6a12-40a2-a2ec-93e5265d3933)
 ![Captura de tela 2023-12-02 155354](https://github.com/GuerraAna/alura-architecture-first-project/assets/78937585/364b0f61-41c1-45ba-a8ec-8c53e5045814)
 ![Captura de tela 2023-12-02 155421](https://github.com/GuerraAna/alura-architecture-first-project/assets/78937585/b7c8a801-ac77-42a2-b256-871f426bf89c)
+
+## Tecnologias
+
+- Kotlin
+- Architecture Components: Room, ViewModel, LiveData, Navigation, Data Binding
+- Retrofit + OkHttp (API local)
+- Koin (injeção de dependência)
+- AGP 3.3.2 / **Gradle 4.10.1**
+
+## Pré-requisitos
+
+- **JDK 8** (obrigatório — Gradle 4.x não roda em JDK 11+). Ex.: Zulu 8 em `~/.jdks/zulu-8`
+- Android SDK
+
+> **Notas de build (2026):** `jcenter()` foi descontinuado — o projeto usa mirror do JCenter (Aliyun) + `mavenCentral()` para resolver `koin-android` e dependências legadas.
+> O app consome uma **API local** (executável Jar do curso) — suba-a antes de rodar o app.
+
+## Como rodar
+
+```bash
+export JAVA_HOME=~/.jdks/zulu-8/Contents/Home      # JDK 8
+echo "sdk.dir=$HOME/Library/Android/sdk" > local.properties
+./gradlew assembleDebug
+```
